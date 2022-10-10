@@ -14,6 +14,7 @@ const formData = document.querySelectorAll(".formData");
 const formCloseBtn = document.querySelectorAll(".close");
 const textControl = document.getElementsByClassName("text-control");
 const form = document.querySelector("form");
+const errorMsg = document.getElementsByClassName(".errorMsg");
 
 // Get Form inputs
 const firstName = document.getElementById("first");
@@ -22,63 +23,42 @@ const nameReg = new RegExp(/^[A-zÀ-ú-']{2,}$/);
 const eMail = document.getElementById("mail");
 const emailReg = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/);
 const birthDate = document.getElementById("birthDate");
-const erreur = document.getElementsByClassName(".errorMsg");
 
+// Form start
 
-form.addEventListener("submit", (e) => 
+function validateForm()
 {
-  if (emptyForm() === true) 
-  {
-    addValidationMsg();
-  }
+  let inputs = form.querySelectorAll("input");
+    inputs.forEach((input) => 
+      {
+        if (input.value === "") {
+          alert("Veuillez remplir le formulaire");
+          return false;
+        }
+      })
+}
+
+form.addEventListener("submit", (e) => {
   e.preventDefault();
-
-  invalidForm()
+    validateForm()
 });
-
-function emptyForm()
-{
-  let checkEmpty = document.forms["first"]["name"]["mail"].value;
-  if (checkEmpty == "")
-  {
-    console.log("Stop le script");
-    alert ("Merci de renseigner les champs vides.");
-    return false;
-  }
-  return true;
-}
-
-function addValidationMsg() {
-  alert("Ok");
-}
-
-function invalidForm() 
-{
-  const firstNameValue = firstName.value.trim(); // Vérifier les espacements
-  const NameValue = Name.value.trim();
-  const eMailValue = eMail.value.trim(); 
-};
 
 function validateFirstName()
 {
-  let vname = firstName.value;
-  if(vname.length == 0)
+  // let vName = firstName.value;
+  let vName = document.getElementById("first").textContent;
+  if(vName.length == 0)
   {
-    firstNameError.getElementById("first").innerHTML = "Le champs ne doit pas être vide";
-    return false;
+    // firstNameError.getElementById("first").innerHTML = "Le champs ne doit pas être vide";
+    // firstNameError.getElementById("first").value = "Le champs ne doit pas être vide";
+    document.getElementById("first").textContent = "Le champs ne doit pas être vide";
   }
   if(!firstName.matches(/^[A-zÀ-ú-']{2,}$/))
   {
     firstNameError.getElementById("first").innerHTML = "Veuillez rentrer un prenom valide";
-    return false;
   }
   firstNameError.getElementById("first").innerHTML = "Valide"
   return true;
-}
-
-function validate()
-{
-  alert("Inscription validé");
 }
 
 //----------------------------------------------------------------
@@ -92,7 +72,6 @@ function launchModal() {
 }
 
 // Close modal event
-// formCloseBtn.addEventListener("click", closeModal);
 formCloseBtn.forEach((btn) => btn.addEventListener("click", closeModal));
 
 function closeModal() {

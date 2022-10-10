@@ -58,15 +58,13 @@
           <!--Modal Fenetre d'inscription-->
           <div class="modal-body">
             
-            <form
+            <form novalidate
               name="reserve"
               action="index.html"
               method="get"
-              onsubmit="return validate();"
             >
               <div
                 class="formData" id="firstName">
-                <p class="errorMsg"></p>
                 <label>Prénom</label><br>
                 <input
                   class="text-control"
@@ -74,11 +72,12 @@
                   id="first"
                   name="first"
                   minlength="2"
-                /><br>
+                />
+                <p class="msgerror"></p>
+                <br>
               </div>
               <div
                 class="formData" id="name">
-                <p class="errorMsg"></p>
                 <label>Nom</label><br>
                 <input
                   class="text-control"
@@ -89,7 +88,6 @@
               </div>
               <div
                 class="formData" id="mail">
-                <p class="errorMsg"></p>
                 <label>E-mail</label><br>
                 <input
                   class="text-control"
@@ -100,7 +98,6 @@
               </div>
               <div
                 class="formData" id="birthDate">
-                <p class="errorMsg"></p>
                 <label>Date de naissance</label><br>
                 <input
                   class="text-control"
