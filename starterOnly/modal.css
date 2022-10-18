@@ -216,6 +216,30 @@ input {
   font-size: 20px;
   height: 48px;
 }
+
+.invalid {
+  display: inline;
+  margin: 0;
+  padding: 8px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 20px;
+  height: 48px;
+  visibility: hidden;
+  color: #e54858;
+}
+
+.msgerror {
+  display: inline;
+  margin: 0;
+  padding: 8px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 20px;
+  height: 48px;
+  color: #e54858;
+}
+
 .formData[data-error]::after {
   content: attr(data-error);
   font-size: 0.4em;
