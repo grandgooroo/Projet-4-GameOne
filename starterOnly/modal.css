@@ -217,16 +217,8 @@ input {
   height: 48px;
 }
 
-.invalid {
-  display: inline;
-  margin: 0;
-  padding: 8px;
-  width: 100%;
-  border-radius: 8px;
-  font-size: 20px;
-  height: 48px;
-  visibility: hidden;
-  color: #e54858;
+.msgerror-border {
+border: medium solid #e54858;
 }
 
 .msgerror {
@@ -328,6 +320,8 @@ input[data-error]::after {
   left: 21%;
   top: 19%;
 }
+.city {}
+
 .close {
   position: absolute;
   right: 15px;
