@@ -14,7 +14,7 @@ const formData = document.querySelectorAll(".formData");
 const formCloseBtn = document.querySelectorAll(".close");
 const textControl = document.getElementsByClassName("text-control");
 const form = document.querySelector("form");
-const input = document.querySelector("input");
+const input = document.querySelectorAll("input");
 
 // Get Form inputs
 const firstName = document.getElementById("firstName");
@@ -42,6 +42,16 @@ const isBetween = (length, min, max) => length < min || length > max ? false : t
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   
+// Variables
+let firstNameInput = document.querySelector("#firstName input");
+let lastNameInput = document.querySelector("#name input");
+let emailInput = document.querySelector("#mail input");
+let birthDateInput = document.querySelector("#birthDate input");
+let cityMsgInput = document.querySelector("#location");
+let cguMsgInput = document.querySelector("#checkbox");
+let inputsErrorMsg = document.querySelectorAll("input");
+let formIsValid = true;
+
   // clear error messages
   let clear = document.querySelectorAll(".msgerror"); // Clear
   if (clear != null)
@@ -52,29 +62,24 @@ form.addEventListener("submit", (e) => {
   });
   }
 
-  function borderInputFalse() 
-  {
-    input.style.border = "medium solid #e54858";
+  //  Red border reset
+  for (const input of inputsErrorMsg){
+  input.dataset.errorVisible = false;
   }
 
-
-    let firstNameInput = document.querySelector("#firstName input");
-    let lastNameInput = document.querySelector("#name input");
-    let emailInput = document.querySelector("#mail input");
-    let birthDateInput = document.querySelector("#birthDate input");
-    let cityMsg = document.getElementsByClassName("city"); // Selectionner le div avec une classe !?
-    let cguMsg = document.getElementsByClassName("checkbox2-label");
-
+function createMsgError(inputX, errorMsgX) {
+  let p = document.createElement("p")
+  p.className = "msgerror";
+  p.textContent = errorMsgX;
+  inputX.after(p);
+  inputX.dataset.errorVisible = true; // Red border On
+}
 
     // Firts name input
     if (firstNameInput.value === "") // Test if first name is empty
     {
-      let p = document.createElement("p");
-      p.className = "msgerror";
-      p.textContent = "Le champ Prenom est obligatoire.";
-      firstNameInput.after(p);
-      // document.getElementsByClassName(".text-control", "true"); // Show red border
-      console.log("test first name");
+      createMsgError(firstNameInput, "Le champ Prenom est obligatoire.")
+      formsIsvalid = false;
     } else {
 
       if (!nameReg.test(firstNameInput.value))
@@ -85,10 +90,10 @@ form.addEventListener("submit", (e) => {
         p.textContent = "Le Prenom doit avoir deux characters minimum.";
         firstNameInput.after(p);
         
-        firstName.dataset.errorVisible = "true"; // Red border On
+        firstName.dataset.errorVisible = true; // Red border On
         console.log("Prenom non valide"); // Test if first name match with Regex
       } else {
-        firstName.dataset.errorVisible = "false"; // Red border Off // desactiver Border rouge !!!
+        firstName.dataset.errorVisible = false; // Red border Off // desactiver Border rouge !!!
       }
     }
 
@@ -127,7 +132,6 @@ form.addEventListener("submit", (e) => {
     // if(!eMail.match(emailReg))
     if (!emailReg.test(emailInput.value))
     {
-    alert("Veuiller entrer une adresse e-mail valide.");
     console.log("test e-mail valide");
     }
 
@@ -138,8 +142,6 @@ form.addEventListener("submit", (e) => {
 
   if (!birthDateInput.value) 
   {
-    alert("Veuiller renseigner une date");
-
     let p = document.createElement("p");
 
     p.className = "msgerror";
@@ -156,10 +158,8 @@ form.addEventListener("submit", (e) => {
   //   console.log("Année incorrecte");
   // } 
   else {
-    alert ("Date correcte"); 
   }
   
-
     // Check Tournament
 let quantityMax = document.getElementById("quantity").max = 9;
 
@@ -169,12 +169,9 @@ let quantityMax = document.getElementById("quantity").max = 9;
     } 
 
     // Check  City
-  // let isCityChecked = city.checked === false;
-
-  // console.log(isCityChecked);
-  // if (!isCityChecked)
 
 let count = 0;
+
   for (let i = 0; i < city.length; i++)
   {
     if (city[i].checked) 
@@ -185,17 +182,25 @@ let count = 0;
   }
   if (!count)
   {
-  console.log("Veuiller cocher une ville");
+    let p = document.createElement("p");
+
+    p.className = "msgerror";
+    p.textContent = "Veuiller cocher une ville";
+    cityMsgInput.after(p);
+
+    console.log("Veuiller cocher une ville");
   }
 
       // Check CGU
   if (generalCondition.checked)
   {}  else {
     console.log("Veuillez cocher les CGU");
-    // let p = document.createElement("p");
-    // p.className = "msgerror";
-    // p.textContent = "Veuiller renseigner une date valide.";
-    // cguMsg.after(p);
+
+    let p = document.createElement("p");
+
+    p.className = "msgerror";
+    p.textContent = "Veuillez cocher les CGU";
+    cguMsgInput.after(p);
   }
 
     // Check Newletter
@@ -204,17 +209,63 @@ let count = 0;
     console.log("Newsletter Non coché");
   }
 
-// Send form // Si tous les champs sont valides alors fermer la modal
-// Show validation message
-// merci()
-// console.log("Affiche message Merci");
-});
-//----------------------------------------------------------------
-function merci()
-{
-let modal = document.querySelector(".modal-body");
-modal.innerHTML = "Merci";
+// Send form Si tous les champs sont valides alors fermer la modal
+
+// Hide form Inputs
+// for (let formData of form) {
+//   console.log(input)
+//   formData.classList.add("hidden");
+// }
+
+function hideForm() {
+  let modalForm = document.querySelector("content");
+  modalForm.classList.add("hidden");
 }
+
+// hideForm()
+
+// Show validation message
+
+// let contentValid = document.createElement("div");
+// contentValid.classList.add = "contentValide";
+
+function showValid() {
+
+  let content = document.createElement("div");
+  
+  content.style = "content";
+
+  let valideP = document.createElement("p");
+
+  valideP.style.margin = "380px 40px 380px 40px";
+  valideP.textContent = "Merci pour votre inscription";
+
+  // Continue button creation
+  let btnValide = document.createElement("button");
+  
+  btnValide.type = "submit";
+  btnValide.className = "btn-submit";
+  btnValide.textContent = "Fermer";
+
+  let divValide = document.querySelector(".modal-body");
+  divValide.appendChild(content);
+  divValide.appendChild(btnValide);
+  content.appendChild(valideP);
+
+  // onclick = closeModal();
+  
+  // btnValide.addEventListener("click", () => {
+  //   closeModal() 
+  //   window.location.reload();
+  // })
+}
+
+// showValid()
+
+});
+
+//----------------------------------------------------------------
+
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
