@@ -10,11 +10,8 @@ function editNav() {
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
-const formData = document.querySelectorAll(".formData");
 const formCloseBtn = document.querySelectorAll(".close");
-const textControl = document.getElementsByClassName("text-control");
 const form = document.querySelector("form");
-const input = document.querySelectorAll("input");
 
 // Get Form inputs
 const firstName = document.getElementById("firstName");
@@ -24,20 +21,57 @@ const nameReg = new RegExp(/^[A-zÀ-ú-']{2,}$/);
 const eMail = document.getElementById("mail");
 const emailReg = new RegExp(/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/);
 const birthDate = document.getElementById("birthDate");
-const birthDateReg = new RegExp(/^[0-9]{2}-[0-9]{2}-[0-9]{4}$/);
-const quantityReg = new RegExp(/^[0-9]{1,2}$/);
+// const birthDateReg = new RegExp(/^[0-9]{2}-[0-9]{2}-[0-9]{4}$/);
+// const quantityReg = new RegExp(/^[0-9]{1,2}$/);
 const quantity = document.getElementById("quantity");
 const city = document.querySelectorAll("input[type=radio]");
-const cityN = document.querySelectorAll("input[name=location]"); //
 const generalCondition = document.getElementById("checkbox1");
 const newsletter = document.getElementById("checkbox2");
-
 const msgError = document.getElementsByClassName("msgerror");
 
-const isRequired = value => value === '' ? false : true;
-const isBetween = (length, min, max) => length < min || length > max ? false : true;
-
 // Form start
+
+function hideForm() {
+  let modalForm = document.querySelector(".content");
+  modalForm.classList.add("hidden");
+  modalForm.setAttribute("dialog", "dialog");
+
+  let contentValid = document.createElement("div"); // Create div for show valid content msg
+  let divValide = document.querySelector(".bground");
+  divValide.appendChild(contentValid);
+  contentValid.className = "content2";
+
+  let contentValidP = document.createElement("p");
+  contentValid.appendChild(contentValidP);
+
+  contentValidP.className = "valid-txt";
+  contentValidP.textContent = "Merci pour vôtre inscription";
+
+  // contentValid.textContent = "Merci pour votre inscription";
+
+  // Continue button creation
+  let btnValid = document.createElement("button");
+      
+  btnValid.type = "submit";
+  btnValid.value = "reset";
+  btnValid.className = "btn-submit-valid";
+  btnValid.textContent = "Fermer";
+
+  contentValid.appendChild(btnValid);
+
+  // onclick = closeModal();
+
+  btnValid.addEventListener("click", () => // close ne fonctionne pas
+  {
+    let modalForm = document.querySelector(".content");
+    closeModal()
+    form.reset()
+    contentValid.remove(); // Remove the div content valid
+    modalForm.classList.remove("hidden"); // Restore the div content empty form
+    btnValid.remove();
+  })
+
+  }
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -52,19 +86,24 @@ let cguMsgInput = document.querySelector("#checkbox");
 let inputsErrorMsg = document.querySelectorAll("input");
 let formIsValid = true;
 
-  // clear error messages
-  let clear = document.querySelectorAll(".msgerror"); // Clear
-  if (clear != null)
+  // clear CSS error messages
+  function clearMsg()
   {
-  clear.forEach(msgerror => {
-    msgerror.remove();
-    console.log("masquer les messages");
-  });
-  }
+    let clear = document.querySelectorAll(".msgerror");
+    if (clear != null)
+      {
+        clear.forEach(msgerror => {
+          msgerror.remove();
+          console.log("masquer les messages");
 
-  //  Red border reset
+        });
+      }
+  }
+  clearMsg()
+
+  //  CSS Red border reset
   for (const input of inputsErrorMsg){
-  input.dataset.errorVisible = false;
+  input.parentNode.dataset.errorVisible = false;
   }
 
 function createMsgError(inputX, errorMsgX) {
@@ -72,67 +111,49 @@ function createMsgError(inputX, errorMsgX) {
   p.className = "msgerror";
   p.textContent = errorMsgX;
   inputX.after(p);
-  inputX.dataset.errorVisible = true; // Red border On
+  inputX.parentNode.dataset.errorVisible = true; // Select CSS class Red border On
 }
 
-    // Firts name input
+    // First name input
     if (firstNameInput.value === "") // Test if first name is empty
     {
-      createMsgError(firstNameInput, "Le champ Prenom est obligatoire.")
-      formsIsvalid = false;
+      createMsgError(firstNameInput, "Le champ Prenom est obligatoire.");
+      formIsValid = false;
+      console.log(formIsValid);
     } else {
 
-      if (!nameReg.test(firstNameInput.value))
+      if (!nameReg.test(firstNameInput.value)) // Test if first name match with Regex
       {
-        let p = document.createElement("p");
-        
-        p.className = "msgerror";
-        p.textContent = "Le Prenom doit avoir deux characters minimum.";
-        firstNameInput.after(p);
-        
-        firstName.dataset.errorVisible = true; // Red border On
-        console.log("Prenom non valide"); // Test if first name match with Regex
-      } else {
-        firstName.dataset.errorVisible = false; // Red border Off // desactiver Border rouge !!!
-      }
+        createMsgError(firstNameInput, "Le Prenom doit avoir deux characters minimum.");
+        formIsValid = false;  
+      } else {}
     }
 
     // Last name input
     if (lastNameInput.value === "") // Test if last Name is empty
     {
-      let p = document.createElement("p");
-
-      p.className = "msgerror";
-      p.textContent = "Le champ Nom est obligatoire.";
-      lastNameInput.after(p); 
-      console.log("test last name");
+      createMsgError(lastNameInput, "Le champ Nom est obligatoire.")
+      formIsValid = false;
     } else {
 
-      if (!nameReg.test(lastNameInput.value))
+      if (!nameReg.test(lastNameInput.value)) // Test if last name match with Regex
       {
-        let p = document.createElement("p");
-
-        p.className = "msgerror";
-        p.textContent = "Le Nom doit avoir deux characters minimum.";
-        lastNameInput.after(p);
-        console.log("Nom non valide"); // Test if last name match with Regex
+        createMsgError(lastNameInput, "Le Nom doit avoir deux characters minimum.");
+        formIsValid = false;
       }
     }
-    // Email  input
-    if (emailInput.value === "") // Test if E-mail is empty
-    {
-      let p = document.createElement("p");
 
-      p.className = "msgerror";
-      p.textContent = "Le champ E-mail est obligatoire.";
-      emailInput.after(p); 
-      console.log("test e-mail vide");
+    // Email  input
+    if (emailInput.value === "") // Test if e-mail is empty
+    {
+      createMsgError(emailInput, "Le champ E-mail est obligatoire.");
+      formIsValid = false; 
     }
     
-    // if(!eMail.match(emailReg))
-    if (!emailReg.test(emailInput.value))
+    else if (!emailReg.test(emailInput.value)) // Test if e-mail match with Regex
     {
-    console.log("test e-mail valide");
+      createMsgError(emailInput, "Veuillez renseigner une E-mail valide.");
+      formIsValid = false;    
     }
 
     // Check birthDate
@@ -142,33 +163,29 @@ function createMsgError(inputX, errorMsgX) {
 
   if (!birthDateInput.value) 
   {
-    let p = document.createElement("p");
-
-    p.className = "msgerror";
-    p.textContent = "Veuiller renseigner une date valide.";
-    birthDateInput.after(p); 
+    createMsgError(birthDateInput, "Veuillez renseigner une date valide.");
+    formIsValid = false; 
   }
 
   if (date > today)
   {
     console.log("Date incorrecte"); 
+    formIsValid = false;
   }
   // if (!birthDateReg.test(birthDateInput.value)) // Ajouter contrainte 4 chiffres Regex.
   // {
   //   console.log("Année incorrecte");
   // } 
-  else {
-  }
-  
+
     // Check Tournament
-let quantityMax = document.getElementById("quantity").max = 9;
+let quantityMax = document.getElementById("quantity").max = 99; 
 
  if (quantity.value.length !== "") // Test if Tournament is empty
     {
       console.log("Tournament OK");
     } 
 
-    // Check  City
+    // Check City
 
 let count = 0;
 
@@ -177,92 +194,39 @@ let count = 0;
     if (city[i].checked) 
     {
       count++;
-    console.log("Ville OK");
     }
   }
-  if (!count)
+    if (!count)
   {
-    let p = document.createElement("p");
-
-    p.className = "msgerror";
-    p.textContent = "Veuiller cocher une ville";
-    cityMsgInput.after(p);
-
-    console.log("Veuiller cocher une ville");
+    createMsgError(cityMsgInput, "Veuillez cocher une ville.");
+    formIsValid = false; 
   }
 
       // Check CGU
   if (generalCondition.checked)
   {}  else {
-    console.log("Veuillez cocher les CGU");
-
-    let p = document.createElement("p");
-
-    p.className = "msgerror";
-    p.textContent = "Veuillez cocher les CGU";
-    cguMsgInput.after(p);
+    createMsgError(cguMsgInput, "Veuillez cocher les CGU.");
+    formIsValid = false; 
   }
 
-    // Check Newletter
+    // Check Newsletter
   if (newsletter.checked)
   {}  else {
     console.log("Newsletter Non coché");
   }
 
-// Send form Si tous les champs sont valides alors fermer la modal
-
-// Hide form Inputs
-// for (let formData of form) {
-//   console.log(input)
-//   formData.classList.add("hidden");
-// }
-
-function hideForm() {
-  let modalForm = document.querySelector("content");
-  modalForm.classList.add("hidden");
-}
-
-// hideForm()
-
-// Show validation message
-
-// let contentValid = document.createElement("div");
-// contentValid.classList.add = "contentValide";
-
-function showValid() {
-
-  let content = document.createElement("div");
+// Send form
   
-  content.style = "content";
+  // Validation
 
-  let valideP = document.createElement("p");
-
-  valideP.style.margin = "380px 40px 380px 40px";
-  valideP.textContent = "Merci pour votre inscription";
-
-  // Continue button creation
-  let btnValide = document.createElement("button");
+    if (formIsValid == true) { // If all fields are valid then hide form
+    console.log(formIsValid);
+      hideForm()
+    }
   
-  btnValide.type = "submit";
-  btnValide.className = "btn-submit";
-  btnValide.textContent = "Fermer";
-
-  let divValide = document.querySelector(".modal-body");
-  divValide.appendChild(content);
-  divValide.appendChild(btnValide);
-  content.appendChild(valideP);
-
-  // onclick = closeModal();
-  
-  // btnValide.addEventListener("click", () => {
-  //   closeModal() 
-  //   window.location.reload();
-  // })
-}
-
-// showValid()
-
 });
+
+
 
 //----------------------------------------------------------------
 
