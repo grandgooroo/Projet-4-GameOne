@@ -24,6 +24,7 @@ const birthDate = document.getElementById("birthDate");
 // const birthDateReg = new RegExp(/^[0-9]{2}-[0-9]{2}-[0-9]{4}$/);
 // const quantityReg = new RegExp(/^[0-9]{1,2}$/);
 const quantity = document.getElementById("quantity");
+const quantityReg = (/^\d+$/);
 const city = document.querySelectorAll("input[type=radio]");
 const generalCondition = document.getElementById("checkbox1");
 const newsletter = document.getElementById("checkbox2");
@@ -81,6 +82,7 @@ let firstNameInput = document.querySelector("#firstName input");
 let lastNameInput = document.querySelector("#name input");
 let emailInput = document.querySelector("#mail input");
 let birthDateInput = document.querySelector("#birthDate input");
+let quantityInput = document.querySelector("#quantity");
 let cityMsgInput = document.querySelector("#location");
 let cguMsgInput = document.querySelector("#checkbox");
 let inputsErrorMsg = document.querySelectorAll("input");
@@ -184,7 +186,12 @@ let quantityMax = document.getElementById("quantity").max = 99;
     {
       console.log("Tournament OK");
     } 
-
+    
+if (!quantityReg.test(quantityInput.value)) // Test if first name match with Regex
+    {
+      createMsgError(quantityInput, "Renseigner un chiffre uniquement.");
+      formIsValid = false; 
+    }
     // Check City
 
 let count = 0;
