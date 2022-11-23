@@ -48,8 +48,6 @@ function hideForm() {
   contentValidP.className = "valid-txt";
   contentValidP.textContent = "Merci pour vôtre inscription";
 
-  // contentValid.textContent = "Merci pour votre inscription";
-
   // Continue button creation
   let btnValid = document.createElement("button");
       
@@ -62,7 +60,7 @@ function hideForm() {
 
   // onclick = closeModal();
 
-  btnValid.addEventListener("click", () => // close ne fonctionne pas
+  btnValid.addEventListener("click", () =>
   {
     let modalForm = document.querySelector(".content");
     closeModal()
