@@ -21,8 +21,6 @@ const nameReg = new RegExp(/^[A-zÀ-ú-']{2,}$/);
 const eMail = document.getElementById("mail");
 const emailReg = new RegExp(/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/);
 const birthDate = document.getElementById("birthDate");
-// const birthDateReg = new RegExp(/^[0-9]{2}-[0-9]{2}-[0-9]{4}$/);
-// const quantityReg = new RegExp(/^[0-9]{1,2}$/);
 const quantity = document.getElementById("quantity");
 const quantityReg = (/^\d+$/);
 const city = document.querySelectorAll("input[type=radio]");
@@ -172,10 +170,6 @@ function createMsgError(inputX, errorMsgX) {
     console.log("Date incorrecte"); 
     formIsValid = false;
   }
-  // if (!birthDateReg.test(birthDateInput.value)) // Ajouter contrainte 4 chiffres Regex.
-  // {
-  //   console.log("Année incorrecte");
-  // } 
 
     // Check Tournament
 let quantityMax = document.getElementById("quantity").max = 99; 
@@ -230,8 +224,6 @@ let count = 0;
     }
   
 });
-
-
 
 //----------------------------------------------------------------
 
